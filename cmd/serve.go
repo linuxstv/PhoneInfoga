@@ -1,13 +1,14 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	api "gopkg.in/sundowndev/phoneinfoga.v2/api"
+	"github.com/sundowndev/phoneinfoga/v2/api"
 )
 
 var httpPort int
@@ -37,6 +38,7 @@ var serveCmd = &cobra.Command{
 			Handler: router,
 		}
 
+		fmt.Printf("Listening on %s\n", httpPort)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}

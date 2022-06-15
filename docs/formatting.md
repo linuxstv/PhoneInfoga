@@ -34,7 +34,7 @@ Here’s the same phone number in E.164 formatting: +442071838750
 
 ## Custom formatting
 
-Sometimes the phone number has footprints but is used with a different formatting. This is a problem because for example if we search for "+15417543010", we'll not find web pages that write it that way : "(541) 754–3010". So the tool use a (optional) custom formatting given by the user to find further and more accurate results. To use this feature properly and make the results more valuable, try to use a format that someone of the number' country would usually use to share the phone number online.
+Sometimes the phone number has footprints but is used with a different formatting. This is a problem because for example if we search for "+15417543010", we'll not find web pages that write it that way : "(541) 754–3010". You should use a format that someone of the number's country would usually use to share the phone number online.
 
 For example, French people usually write numbers that way online : `06.20.30.40.50` or `06 20 30 40 50`.
 
@@ -76,37 +76,3 @@ For European countries (France as example) :
 - `(0033)01-86-48-xx-xx`
 - `(0033)018-648-xxx-x`
 - `+33/018 648 xxx x`
-
-## Local scan formatting (developers)
-
-The local scan create several variables to be usable in OSINT footprinting and other scanners.
-
-Examples : 
-
-```
-{
-    'input': '+1 512-618-xxxx',
-    'default': '1512618xxxx',
-    'local': '512618xxxx',
-    'international': '+1 512-618-xxxx',
-    'country': 'United States',
-    'countryCode': '+1',
-    'countryIsoCode': 'US',
-    'location': 'Texas',
-    'carrier': ''
-}
-```
-
-```
-{
-    'input': '+33 066651xxxx',
-    'default': '3366651xxxx',
-    'local': '66651xxxx',
-    'international': '+33 66651xxxx',
-    'country': 'France',
-    'countryCode': '+33',
-    'countryIsoCode': 'FR',
-    'location': 'France',
-    'carrier': 'Bouygues'
-}
-```

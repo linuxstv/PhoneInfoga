@@ -1,11 +1,11 @@
 # Go module usage
 
-You can easily use scanners in your own Golang script. You can find [Go documentation here](https://godoc.org/github.com/sundowndev/PhoneInfoga).
+You can easily use scanners in your own Golang script. You can find [Go documentation here](https://pkg.go.dev/github.com/sundowndev/phoneinfoga/v2).
 
 ### Install the module
 
 ```
-go get -v gopkg.in/sundowndev/phoneinfoga.v2
+go get -v github.com/sundowndev/phoneinfoga/v2
 ```
 
 ### Usage example
@@ -15,23 +15,20 @@ package main
 
 import (
 	"fmt"
-	"log"
 
-	phoneinfoga "gopkg.in/sundowndev/phoneinfoga.v2/pkg/scanners"
+	"github.com/sundowndev/phoneinfoga/v2/lib/number"
+	"github.com/sundowndev/phoneinfoga/v2/lib/remote"
 )
 
 func main() {
-	number, err := phoneinfoga.LocalScan("<number>")
+	n, _ := number.NewNumber("...")
+	s := remote.NewGoogleSearchScanner()
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	res, _ := s.Scan(n)
 
-	links := phoneinfoga.GoogleSearchScan(number)
-
+	links := res.(remote.GoogleSearchResponse)
 	for _, link := range links.Individuals {
 		fmt.Println(link.URL) // Google search link to scan
 	}
 }
-
 ```

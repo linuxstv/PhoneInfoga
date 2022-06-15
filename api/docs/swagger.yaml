@@ -4,6 +4,19 @@ definitions:
     properties:
       error:
         type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  api.ScanResultResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+      result:
+        type: object
       success:
         type: boolean
     type: object
@@ -11,9 +24,11 @@ definitions:
     properties:
       error:
         type: string
+      message:
+        type: string
       numbers:
         items:
-          $ref: '#/definitions/scanners.Number'
+          $ref: '#/definitions/number.Number'
         type: array
       success:
         type: boolean
@@ -27,16 +42,24 @@ definitions:
       version:
         type: string
     type: object
-  api.scanResultResponse:
+  number.Number:
     properties:
-      error:
+      carrier:
         type: string
-      result:
-        type: object
-      success:
-        type: boolean
+      country:
+        type: string
+      countryCode:
+        type: integer
+      e164:
+        type: string
+      international:
+        type: string
+      local:
+        type: string
+      rawLocal:
+        type: string
     type: object
-  scanners.GoogleSearchDork:
+  remote.GoogleSearchDork:
     properties:
       dork:
         type: string
@@ -45,47 +68,30 @@ definitions:
       url:
         type: string
     type: object
-  scanners.GoogleSearchResponse:
+  remote.GoogleSearchResponse:
     properties:
-      disposableProviders:
+      disposable_providers:
         items:
-          $ref: '#/definitions/scanners.GoogleSearchDork'
+          $ref: '#/definitions/remote.GoogleSearchDork'
         type: array
       general:
         items:
-          $ref: '#/definitions/scanners.GoogleSearchDork'
+          $ref: '#/definitions/remote.GoogleSearchDork'
         type: array
       individuals:
         items:
-          $ref: '#/definitions/scanners.GoogleSearchDork'
+          $ref: '#/definitions/remote.GoogleSearchDork'
         type: array
       reputation:
         items:
-          $ref: '#/definitions/scanners.GoogleSearchDork'
+          $ref: '#/definitions/remote.GoogleSearchDork'
         type: array
-      socialMedia:
+      social_media:
         items:
-          $ref: '#/definitions/scanners.GoogleSearchDork'
+          $ref: '#/definitions/remote.GoogleSearchDork'
         type: array
     type: object
-  scanners.Number:
-    properties:
-      E164:
-        type: string
-      carrier:
-        type: string
-      country:
-        type: string
-      countryCode:
-        type: integer
-      international:
-        type: string
-      local:
-        type: string
-      rawLocal:
-        type: string
-    type: object
-  scanners.NumverifyScannerResponse:
+  remote.NumverifyScannerResponse:
     properties:
       carrier:
         type: string
@@ -108,15 +114,15 @@ definitions:
       valid:
         type: boolean
     type: object
-  scanners.OVHScannerResponse:
+  remote.OVHScannerResponse:
     properties:
       city:
         type: string
       found:
         type: boolean
-      numberRange:
+      number_range:
         type: string
-      zipCode:
+      zip_code:
         type: string
     type: object
 host: demo.phoneinfoga.crvx.fr
@@ -125,7 +131,7 @@ info:
   description: Advanced information gathering & OSINT framework for phone numbers.
   license:
     name: GNU General Public License v3.0
-    url: https://github.com/sundowndev/PhoneInfoga/blob/master/LICENSE
+    url: https://github.com/sundowndev/phoneinfoga/blob/master/LICENSE
   title: PhoneInfoga REST API
   version: v2
 paths:
@@ -145,7 +151,7 @@ paths:
             $ref: '#/definitions/api.JSONResponse'
       summary: Check if service is healthy.
       tags:
-      - default
+      - General
   /numbers:
     get:
       deprecated: true
@@ -177,10 +183,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/api.scanResultResponse'
+            - $ref: '#/definitions/api.ScanResultResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/scanners.GoogleSearchResponse'
+                  $ref: '#/definitions/remote.GoogleSearchResponse'
               type: object
         "400":
           description: Bad Request
@@ -205,10 +211,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/api.scanResultResponse'
+            - $ref: '#/definitions/api.ScanResultResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/scanners.Number'
+                  $ref: '#/definitions/number.Number'
               type: object
         "400":
           description: Bad Request
@@ -233,10 +239,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/api.scanResultResponse'
+            - $ref: '#/definitions/api.ScanResultResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/scanners.NumverifyScannerResponse'
+                  $ref: '#/definitions/remote.NumverifyScannerResponse'
               type: object
         "400":
           description: Bad Request
@@ -247,6 +253,7 @@ paths:
       - Numbers
   /numbers/{number}/scan/ovh:
     get:
+      deprecated: true
       operationId: ovhScan
       parameters:
       - description: Input phone number
@@ -261,10 +268,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/api.scanResultResponse'
+            - $ref: '#/definitions/api.ScanResultResponse'
             - properties:
                 result:
-                  $ref: '#/definitions/scanners.OVHScannerResponse'
+                  $ref: '#/definitions/remote.OVHScannerResponse'
               type: object
         "400":
           description: Bad Request
